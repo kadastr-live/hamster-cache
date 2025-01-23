@@ -1,5 +1,7 @@
 # HamsterCache
 
+![header image](./docs/images/header.png)
+
 HamsterCache is a caching solution with nginx configuration generation and statistics. It provides tools to generate nginx configurations based on a YAML configuration file and to gather statistics about the cache directories.
 
 ## Features
