@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "hamstercache"
+version = "0.1.0"
+description = "A caching solution with nginx configuration generation and statistics."
+authors = ["Oleksandr Shyshatskyi <shalal545@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = "^2.10"
+pyyaml = "^6.0.2"
+crossplane = "^0.5.8"
+click = "^8.1"
+watchdog = "^6.0.0"
+
+[tool.poetry.scripts]
+hamster-cache = "hamstercache.main:cli"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

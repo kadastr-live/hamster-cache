@@ -1,0 +1,18 @@
+---
+proxies:
+  - url: https://data.gki.com.ua/api-user/rtile/orto10/ua/
+    cache:
+      size: 1024M
+      ttl: 10y
+
+  - url: https://data.gki.com.ua/api-user/rtile/topo100/ua/
+    cache:
+      ttl: 10y
+
+  - url: https://geodata.gki.com.ua/api-user/rtile/carto_2756793959475840066/ua/
+    cache:
+      ttl: 10y
+
+  - url: https://cdn.kadastr.live/tiles/raster/styles/parcels/
+    cache:
+      ttl: 10d
