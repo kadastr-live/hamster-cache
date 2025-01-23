@@ -28,7 +28,11 @@ def generate_proxy_paths(config):
     for proxy in config.proxies:
         proxy_paths.append({
             "directive": "proxy_cache_path",
-            "args": [f"/cache/{proxy.hash()}", f"keys_zone={proxy.hash()}:{proxy.cache.size}"]
+            "args": [
+                f"/cache/{proxy.hash()}",
+                f"keys_zone={proxy.hash()}:{proxy.cache.size}",
+                f"inactive={proxy.cache.ttl}"
+            ]
         })
         proxy_paths.append({
             "directive": "#",
