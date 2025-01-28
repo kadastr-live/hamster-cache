@@ -22,15 +22,14 @@ def nginx_config(config_file):
 @click.command()
 @click.option('--config-file', default='/etc/hamstercache/config.yaml', help='Path to the configuration file.')
 def statistics(config_file):
-    # Placeholder for statistics functionality
     cfg = config.load_config(config_file)
 
     _hash_to_name = {
         proxy.hash(): proxy.url for proxy in cfg.proxies
     }
-    
+
     directory_sizes = stats.get_directory_sizes()
-    
+
     # Print the directory sizes in table format
     print(f"{'Name':<80} {'Directory':<30} {'Size':>15}")
     print("-" * 85)
@@ -76,6 +75,29 @@ def serve(config_file: str):
 
 
 @click.command()
+@click.option('--config-file', default='/etc/hamstercache/config.yaml', help='Path to the configuration file.')
+@click.option('--cache', help='Cache url to seed. Seeding is managed by plugin defined in cache configuration.')
+def seed(config_file: str, cache: str):
+    cfg = config.load_config(config_file)
+
+    for proxy in cfg.proxies:
+        if proxy.cache.plugin is None:
+            logging.warning('Unable to seed url %s because plugin is '
+                            'not defined in cache configuration.', proxy.url)
+            continue
+
+        try:
+            plugin_instance = __import__(proxy.cache.plugin.name)
+        except ImportError:
+            logging.error('Unable to import plugin `%s`. '
+                          'Make sure that it is importable and exists in PYTHONPATH.', proxy.cache.plugin.name)
+            raise
+
+        plugin_instance.seed(proxy.url, proxy.cache.plugin.metadata)
+
+
+
+@click.command()
 def shell():
     p = subprocess.Popen(['sh'], stdin=sys.stdin)
     p.wait()
@@ -91,6 +113,7 @@ cli.add_command(nginx_config)
 cli.add_command(statistics)
 cli.add_command(serve)
 cli.add_command(shell)
+cli.add_command(seed)
 
 if __name__ == '__main__':
     cli()

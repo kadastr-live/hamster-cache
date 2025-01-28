@@ -16,3 +16,7 @@ proxies:
   - url: https://cdn.kadastr.live/tiles/raster/styles/parcels/
     cache:
       ttl: 10d
+      plugin:
+        name: xyz
+        metadata:
+          bounds: [33.842010,47.804854,36.455383,48.676454]

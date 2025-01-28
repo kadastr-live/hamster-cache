@@ -1,11 +1,8 @@
-import urllib.parse
 import logging
-from hashlib import md5
-from pathlib import Path
 
 import crossplane
 import yaml
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import ValidationError
 from .models import Config
 
 
@@ -78,8 +75,24 @@ def generate_locations(config):
                     "args": ['off']
                 },
                 {
+                    "directive": "#",
+                    "comment": "Handle purging and bypass based on custom headers"
+                },
+                {
+                    "directive": "proxy_cache_bypass",
+                    "args": ["$purge_url"]
+                },
+                {
                     "directive": "add_header",
                     "args": ['X-Debug-Cache-Group', proxy.hash()]
+                },
+                {
+                    "directive": "add_header",
+                    "args": ['X-Debug-Cache-Bypass', "$purge_url"]
+                },
+                {
+                    "directive": "add_header",
+                    "args": ['X-Cache-Date', "$upstream_http_date"]
                 },
             ]
         })
@@ -125,6 +138,35 @@ def create_nginx_config(config_file):
                     "args": ["/dev/stdout"]
                 },
                 *proxy_paths,
+                {
+                    "directive": "map",
+                    "args": ["$remote_addr", "$purge_allowed"],
+                    "block": [
+                        {
+                            "directive": "default",
+                            "args": ["0"]
+                        },
+                        {
+                            "directive": "127.0.0.1",
+                            "args": ["1"]
+                        }
+                    ]
+                },
+
+                {
+                    "directive": "map",
+                    "args": ["$http_x_purge_cache", "$purge_url"],
+                    "block": [
+                        {
+                            "directive": "default",
+                            "args": ["0"]
+                        },
+                        {
+                            "directive": "1",
+                            "args": ["$purge_allowed"]
+                        }
+                    ]
+                },
                 {
                     "directive": "server",
                     "args": [],

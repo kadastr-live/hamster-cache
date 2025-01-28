@@ -1,12 +1,19 @@
 import urllib.parse
 from hashlib import md5
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+
+
+class PluginConfig(BaseModel):
+    name: str
+    metadata: dict
 
 
 class CacheSettings(BaseModel):
     ttl: str
     size: str = '128M'
+
+    plugin: PluginConfig | None = None
 
 
 class ProxyConfig(BaseModel):

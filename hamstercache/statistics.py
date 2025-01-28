@@ -1,10 +1,12 @@
 from pathlib import Path
 
+
 def format_size(size):
     for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
         if size < 1024:
             return f"{size:.2f} {unit}"
         size /= 1024
+
 
 def get_directory_sizes(cache_folder='cache/'):
     directory_sizes = []

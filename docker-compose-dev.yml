@@ -1,0 +1,11 @@
+services:
+  server:
+    build: .
+    ports:
+      - "127.0.0.1:80:80"
+    command:
+      - serve
+    volumes:
+      - ./cache:/cache/
+      - ./hamstercache/:/code/hamstercache/
+      - ./example/config.yaml:/etc/hamstercache/config.yaml
