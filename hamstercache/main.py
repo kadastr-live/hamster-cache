@@ -76,14 +76,18 @@ def serve(config_file: str):
 
 @click.command()
 @click.option('--config-file', default='/etc/hamstercache/config.yaml', help='Path to the configuration file.')
-@click.option('--cache', help='Cache url to seed. Seeding is managed by plugin defined in cache configuration.')
-def seed(config_file: str, cache: str):
+@click.option('--location', help='Cache url to seed. Seeding is managed by plugin defined in cache configuration.')
+def seed(config_file: str, location: str):
     cfg = config.load_config(config_file)
 
     for proxy in cfg.proxies:
         if proxy.cache.plugin is None:
             logging.warning('Unable to seed url %s because plugin is '
                             'not defined in cache configuration.', proxy.url)
+            continue
+
+        if proxy.url != location:
+            logging.info('Location %s is not requested for seed', proxy.url)
             continue
 
         try:

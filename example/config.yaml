@@ -19,4 +19,5 @@ proxies:
       plugin:
         name: xyz
         metadata:
+          format: '{z}/{x}/{y}.png'
           bounds: [33.842010,47.804854,36.455383,48.676454]
