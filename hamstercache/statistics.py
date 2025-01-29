@@ -1,3 +1,4 @@
+import subprocess
 from pathlib import Path
 
 
@@ -12,7 +13,7 @@ def get_directory_sizes(cache_folder='cache/'):
     directory_sizes = []
     for directory in Path(cache_folder).iterdir():
         if directory.is_dir():
-            size = sum(f.stat().st_size for f in directory.glob('**/*') if f.is_file())
+            size = int(subprocess.check_output(['du', '-s', '-b', str(directory)]).split()[0])
             directory_sizes.append({
                 "path": str(directory),
                 "name": directory.name,
