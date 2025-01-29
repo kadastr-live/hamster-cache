@@ -21,3 +21,12 @@ proxies:
         metadata:
           format: '{z}/{x}/{y}.png'
           bounds: [33.842010,47.804854,36.455383,48.676454]
+          min_zoom: 0
+          max_zoom: 14
+
+  - url: https://cdn.kadastr.live/tiles/raster/
+    cache:
+      ttl: 1m
+      plugin:
+        name: plain
+        metadata: {}

@@ -11,6 +11,9 @@ pyyaml = "^6.0.2"
 crossplane = "^0.5.8"
 click = "^8.1"
 watchdog = "^6.0.0"
+requests = "^2.32.3"
+mercantile = "^1.2.1"
+tqdm = "^4.67.1"
 
 [tool.poetry.scripts]
 hamster-cache = "hamstercache.main:cli"
